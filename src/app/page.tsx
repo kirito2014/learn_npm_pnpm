@@ -86,11 +86,16 @@ export default function Home() {
   const [fontFamilyValue, setFontFamilyValue] = useState('"Microsoft YaHei", sans-serif');
   const [fontSize, setFontSize] = useState('text-4xl');
   const [fontSizeValue, setFontSizeValue] = useState('2.25rem');
+  // 文本样式状态
+  const [isUnderline, setIsUnderline] = useState(false);
+  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(false);
 
   const [borderRadius, setBorderRadius] = useState('12');
   const [borderColor, setBorderColor] = useState('#e2e8f0');
   const [shadowColor, setShadowColor] = useState('#cbd5e0');
   const [isDarkMode, setIsDarkMode] = useState(false);
+
   
   // 新增：设置面板显示状态
   const [showSettings, setShowSettings] = useState(false);
@@ -216,13 +221,13 @@ export default function Home() {
               ) : hitokoto ? (
                 <div className="text-center">
                   <p 
-                    className={`font-semibold mb-4 bg-clip-text text-transparent ${selectedGradient}`}
+                    className={`mb-4 ${isBold ? 'font-bold' : 'font-semibold'} ${isUnderline ? 'underline' : ''} ${isItalic ? 'italic' : ''} bg-clip-text text-transparent ${selectedGradient}`}
                     style={{ 
                       fontFamily: fontFamilyValue,
                       fontSize: fontSizeValue
                     }}
                   >
-                    "{hitokoto.hitokoto}"
+                    {hitokoto.hitokoto}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     — {hitokoto.from_who || hitokoto.from}
@@ -300,6 +305,39 @@ export default function Home() {
                         </option>
                       ))}
                     </select>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">文本样式</label>
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-1 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={isUnderline}
+                          onChange={(e) => setIsUnderline(e.target.checked)}
+                          className={`${isDarkMode ? 'text-purple-500' : 'text-blue-500'}`}
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">下划线</span>
+                      </label>
+                      <label className="flex items-center gap-1 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={isBold}
+                          onChange={(e) => setIsBold(e.target.checked)}
+                          className={`${isDarkMode ? 'text-purple-500' : 'text-blue-500'}`}
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">加粗</span>
+                      </label>
+                      <label className="flex items-center gap-1 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={isItalic}
+                          onChange={(e) => setIsItalic(e.target.checked)}
+                          className={`${isDarkMode ? 'text-purple-500' : 'text-blue-500'}`}
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">斜体</span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 
