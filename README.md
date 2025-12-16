@@ -1,56 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hitokoto App - 一言应用
 
-## Getting Started
+这是一个基于 Next.js 构建的一言应用，集成了 Hitokoto API，提供精美的界面和丰富的自定义功能。
 
-First, run the development server:
+## 技术栈
+
+- **前端框架**: Next.js 16
+- **开发语言**: TypeScript
+- **样式框架**: Tailwind CSS 4
+- **状态管理**: React Hooks
+- **构建工具**: pnpm
+
+## 项目特性
+
+- ✨ 精美的渐变文字效果
+- 🌓 暗黑/明亮主题切换
+- 🎨 丰富的样式自定义选项：
+  - 字体颜色、类型、大小
+  - 边框圆角、阴影效果
+  - 字体样式（加粗、斜体、下划线）
+- 📦 支持按类别获取一言内容
+- 🎯 响应式设计，适配不同屏幕尺寸
+- 🏠 优雅的背景动画效果
+- 🔧 便捷的设置面板，实时预览效果
+
+## 快速开始
+
+### 安装依赖
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 启动开发服务器
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看应用效果。
 
-## Learn More
+### 构建生产版本
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 环境变量配置
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+创建 `.env` 文件并添加以下环境变量：
 
-## Deploy on Vercel
+| 变量名 | 描述 | 示例 |
+|--------|------|------|
+| `NEXT_PUBLIC_PROJECT_NAME` | 项目名称或 GitHub 仓库链接 | `https://github.com/hitokoto-osc` |
+| `NEXT_PUBLIC_VERSION` | 项目版本号 | `1.1.0` |
+| `NEXT_PUBLIC_DESCRIPTION` | 项目描述 | `一个简单前端练习项目` |
+| `NEXT_PUBLIC_AUTHOR` | 项目作者 | `majorking` |
+| `NEXT_PUBLIC_GITHUB_REPO` | 项目 GitHub 仓库链接 | `https://github.com/kirito2014/learn_npm_pnpm` |
+| `NEXT_PUBLIC_SITE_TITLE` | 网站标题 | `hitokoto-app` |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Environment Variables
-
-This project uses environment variables to configure various aspects of the application. Create a `.env` file in the root directory and add the following variables:
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_PROJECT_NAME` | The name of the project or GitHub repository link | `https://github.com/hitokoto-osc` |
-| `NEXT_PUBLIC_VERSION` | The version of the project | `1.1.0` |
-| `NEXT_PUBLIC_DESCRIPTION` | A description of the project | `一个简单前端练习项目` |
-| `NEXT_PUBLIC_AUTHOR` | The author of the project | `majorking` |
-| `NEXT_PUBLIC_GITHUB_REPO` | The GitHub repository link for the project | `https://github.com/kirito2014/learn_npm_pnpm` |
-| `NEXT_PUBLIC_SITE_TITLE` | The title of the website | `hitokoto-app` |
-
-These variables are used to customize the application's footer information, browser tab title, and other metadata.
-
-### Example `.env` File
+### 环境变量示例
 
 ```env
 # 项目配置信息
@@ -61,3 +69,50 @@ NEXT_PUBLIC_AUTHOR=majorking
 NEXT_PUBLIC_GITHUB_REPO=https://github.com/kirito2014/learn_npm_pnpm
 NEXT_PUBLIC_SITE_TITLE=hitokoto-app
 ```
+
+## 部署
+
+### 使用 Vercel 部署
+
+1. 登录 [Vercel](https://vercel.com/) 账号
+2. 点击 "New Project" 按钮
+3. 选择你的 GitHub 仓库
+4. 配置环境变量（在 Settings > Environment Variables 中添加）
+5. 点击 "Deploy" 按钮开始部署
+
+### 本地构建
+
+```bash
+pnpm build
+pnpm start
+```
+
+## 项目结构
+
+```
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx    # 根布局文件
+│   │   └── page.tsx      # 主页面组件
+│   └── components/       # 组件目录
+├── public/               # 静态资源目录
+├── .env                  # 环境变量配置
+├── next.config.js        # Next.js 配置
+├── tailwind.config.js    # Tailwind CSS 配置
+├── tsconfig.json         # TypeScript 配置
+└── README.md             # 项目说明
+```
+
+## 贡献
+
+欢迎提交 Issues 和 Pull Requests！
+
+## 许可证
+
+MIT License
+
+## 致谢
+
+- [Hitokoto API](https://hitokoto.cn/) - 提供一言内容
+- [Next.js](https://nextjs.org/) - 前端框架
+- [Tailwind CSS](https://tailwindcss.com/) - 样式框架
