@@ -416,25 +416,56 @@ export default function Home() {
       {/* 项目信息 */}
       <footer className="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
         <div className="flex justify-center items-center gap-2 flex-wrap">
-          <a href="https://github.com/hitokoto-osc" target="_blank" rel="noopener noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-              <path d="M9 18c-4.51 2-5-2-7-2" />
-            </svg>
-            hitokoto-osc
-          </a>
-          <span>•</span>
-          <a href="https://github.com/kirito2014/hitokoto-app" target="_blank" rel="noopener noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-              <path d="M9 18c-4.51 2-5-2-7-2" />
-            </svg>
-            hitokoto-app
-          </a>
+          {/* 显示hitokoto-osc GitHub链接 */}
+          {process.env.NEXT_PUBLIC_PROJECT_NAME && (
+            <a 
+              href={process.env.NEXT_PUBLIC_PROJECT_NAME} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-blue-500 dark:text-blue-400 hover:underline flex items-center gap-1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                <path d="M9 18c-4.51 2-5-2-7-2" />
+              </svg>
+              {process.env.NEXT_PUBLIC_PROJECT_NAME.split('/').pop() || 'GitHub'}
+            </a>
+          )}
+          
+          {/* 显示项目GitHub链接 */}
+          {process.env.NEXT_PUBLIC_PROJECT_NAME && process.env.NEXT_PUBLIC_GITHUB_REPO && (
+            <>
+              <span>•</span>
+              <a 
+                href={process.env.NEXT_PUBLIC_GITHUB_REPO} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-500 dark:text-blue-400 hover:underline flex items-center gap-1"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                  <path d="M9 18c-4.51 2-5-2-7-2" />
+                </svg>
+                {process.env.NEXT_PUBLIC_GITHUB_REPO.split('/').pop() || 'GitHub'}
+              </a>
+            </>
+          )}
+          
+          {/* 显示版本信息 */}
           <span>•</span>
           <span>Version {process.env.NEXT_PUBLIC_VERSION || '1.0.0'}</span>
+          
+          {/* 显示作者信息 */}
           <span>•</span>
           <span>Author {process.env.NEXT_PUBLIC_AUTHOR || 'Unknown'}</span>
+          
+          {/* 显示项目描述 */}
+          {process.env.NEXT_PUBLIC_DESCRIPTION && (
+            <>
+              <span>•</span>
+              <span>{process.env.NEXT_PUBLIC_DESCRIPTION}</span>
+            </>
+          )}
         </div>
       </footer>
     </div>
