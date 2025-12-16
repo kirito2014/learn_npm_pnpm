@@ -35,20 +35,24 @@ const hitokotoTypes = [
   { value: 'l', label: '抖机灵' },
 ];
 
-// 字体类型选项
+// 字体类型选项 - 新增中文字体
 const fontOptions = [
-  { value: 'font-sans', label: '无衬线' },
-  { value: 'font-serif', label: '衬线' },
-  { value: 'font-mono', label: '等宽' },
+  { value: 'font-sans', label: '无衬线', fontFamily: 'sans-serif' },
+  { value: 'font-serif', label: '衬线', fontFamily: 'serif' },
+  { value: 'font-mono', label: '等宽', fontFamily: 'monospace' },
+  { value: 'msyh', label: '微软雅黑', fontFamily: '"Microsoft YaHei", sans-serif' },
+  { value: 'simhei', label: '黑体', fontFamily: '"SimHei", sans-serif' },
+  { value: 'simsun', label: '宋体', fontFamily: '"SimSun", serif' },
+  { value: 'fangsong', label: '仿宋', fontFamily: '"FangSong", serif' },
 ];
 
 // 字体大小选项
 const fontSizeOptions = [
-  { value: 'text-base', label: '默认' },
-  { value: 'text-lg', label: '大' },
-  { value: 'text-xl', label: '特大' },
-  { value: 'text-2xl', label: '超大' },
-  { value: 'text-3xl', label: '极大' },
+  { value: 'text-base', label: '默认', fontSize: '1rem' },
+  { value: 'text-lg', label: '大', fontSize: '1.125rem' },
+  { value: 'text-xl', label: '特大', fontSize: '1.25rem' },
+  { value: 'text-2xl', label: '超大', fontSize: '1.5rem' },
+  { value: 'text-3xl', label: '极大', fontSize: '1.875rem' },
 ];
 
 export default function Home() {
@@ -60,11 +64,16 @@ export default function Home() {
   const [selectedType, setSelectedType] = useState('');
   const [textColor, setTextColor] = useState('#1a202c');
   const [fontFamily, setFontFamily] = useState('font-sans');
+  const [fontFamilyValue, setFontFamilyValue] = useState('sans-serif');
   const [fontSize, setFontSize] = useState('text-xl');
+  const [fontSizeValue, setFontSizeValue] = useState('1.25rem');
   const [borderRadius, setBorderRadius] = useState('12');
   const [borderColor, setBorderColor] = useState('#e2e8f0');
   const [shadowColor, setShadowColor] = useState('#cbd5e0');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  // 新增：设置面板显示状态
+  const [showSettings, setShowSettings] = useState(false);
   
   // 获取一言数据
   const fetchHitokoto = async () => {
@@ -95,24 +104,73 @@ export default function Home() {
     setIsDarkMode(!isDarkMode);
   };
   
+  // 切换设置面板显示
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
+  };
+  
+  // 关闭设置面板
+  const closeSettings = () => {
+    setShowSettings(false);
+  };
+  
+  // 字体变化处理
+  const handleFontFamilyChange = (value: string) => {
+    const selectedFont = fontOptions.find(font => font.value === value);
+    if (selectedFont) {
+      setFontFamily(value);
+      setFontFamilyValue(selectedFont.fontFamily);
+    }
+  };
+  
+  // 字体大小变化处理
+  const handleFontSizeChange = (value: string) => {
+    const selectedSize = fontSizeOptions.find(size => size.value === value);
+    if (selectedSize) {
+      setFontSize(value);
+      setFontSizeValue(selectedSize.fontSize);
+    }
+  };
+  
   return (
-    <div className={`min-h-screen flex flex-col ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
-      {/* 主题切换按钮 */}
-      <button
-        onClick={toggleDarkMode}
-        className="absolute top-4 right-4 p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all"
-        aria-label="切换主题"
-      >
-        {isDarkMode ? '🌞' : '🌙'}
-      </button>
+    <div className={`min-h-screen flex flex-col ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'} relative overflow-hidden`}>
+      {/* 背景动效 */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className={`absolute -top-40 -left-40 w-80 h-80 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob`}></div>
+        <div className={`absolute -top-20 -right-20 w-80 h-80 bg-blue-300 dark:bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000`}></div>
+        <div className={`absolute bottom-20 left-40 w-80 h-80 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000`}></div>
+      </div>
       
-      <main className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl">
-          {/* 一言展示区域 */}
-          <div className="mb-8">
+      {/* 顶部按钮区域 */}
+      <div className="absolute top-4 right-4 flex gap-2 z-10">
+        {/* 主题切换按钮 */}
+        <button
+          onClick={toggleDarkMode}
+          className="p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-md hover:shadow-lg transition-all backdrop-blur-sm"
+          aria-label="切换主题"
+        >
+          {isDarkMode ? '🌞' : '🌙'}
+        </button>
+        
+        {/* 设置按钮 */}
+        <button
+          onClick={toggleSettings}
+          className="p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-md hover:shadow-lg transition-all backdrop-blur-sm"
+          aria-label="设置"
+        >
+          ⚙️
+        </button>
+      </div>
+      
+      {/* 主内容区域 */}
+      <main className="flex-1 flex p-4">
+        {/* 一言展示区域 - 始终显示 */}
+        <div className={`flex-1 flex items-center justify-center ${showSettings ? 'max-w-1/2' : 'w-full'}`}>
+          <div className="w-full max-w-2xl">
             <div 
-              className={`p-8 rounded-${borderRadius} border ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg transition-all duration-300`}
+              className={`p-8 border ${isDarkMode ? 'bg-gray-800/90' : 'bg-white/90'} shadow-lg transition-all duration-300 backdrop-blur-sm`}
               style={{
+                borderRadius: `${borderRadius}px`,
                 borderColor: borderColor,
                 boxShadow: `0 10px 15px -3px ${shadowColor}80, 0 4px 6px -2px ${shadowColor}40`,
               }}
@@ -124,8 +182,12 @@ export default function Home() {
               ) : hitokoto ? (
                 <div className="text-center">
                   <p 
-                    className={`${fontFamily} ${fontSize} font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500`}
-                    style={{ color: textColor }}
+                    className={`font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500`}
+                    style={{ 
+                      color: textColor,
+                      fontFamily: fontFamilyValue,
+                      fontSize: fontSizeValue
+                    }}
                   >
                     "{hitokoto.hitokoto}"
                   </p>
@@ -140,126 +202,140 @@ export default function Home() {
               )}
             </div>
           </div>
-          
-          {/* 配置面板 */}
-          <div className={`p-6 rounded-lg border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} shadow-md`}>
-            <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">样式配置</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* 字体配置 */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">字体设置</h3>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">字体颜色</label>
-                  <input
-                    type="color"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    className="w-full h-10 rounded cursor-pointer"
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">字体类型</label>
-                  <select
-                    value={fontFamily}
-                    onChange={(e) => setFontFamily(e.target.value)}
-                    className={`w-full p-2 border rounded ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'}`}
-                  >
-                    {fontOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">字体大小</label>
-                  <select
-                    value={fontSize}
-                    onChange={(e) => setFontSize(e.target.value)}
-                    className={`w-full p-2 border rounded ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'}`}
-                  >
-                    {fontSizeOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+        </div>
+        
+        {/* 设置面板 - 条件显示 */}
+        {showSettings && (
+          <div className="flex-1 p-4 max-w-1/2">
+            <div className={`p-6 rounded-lg border ${isDarkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-gray-200'} shadow-md backdrop-blur-sm`}>
+              {/* 设置面板标题和关闭按钮 */}
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">样式配置</h2>
+                <button
+                  onClick={closeSettings}
+                  className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  aria-label="关闭设置"
+                >
+                  ×
+                </button>
               </div>
               
-              {/* 外框配置 */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">外框设置</h3>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">圆角大小</label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="32"
-                    value={borderRadius}
-                    onChange={(e) => setBorderRadius(e.target.value)}
-                    className="w-full"
-                  />
-                  <div className="text-sm text-center text-gray-500 dark:text-gray-400 mt-1">
-                    {borderRadius}px
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* 字体配置 */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">字体设置</h3>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">字体颜色</label>
+                    <input
+                      type="color"
+                      value={textColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                      className="w-full h-10 rounded cursor-pointer"
+                    />
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">字体类型</label>
+                    <select
+                      value={fontFamily}
+                      onChange={(e) => handleFontFamilyChange(e.target.value)}
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'}`}
+                    >
+                      {fontOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">字体大小</label>
+                    <select
+                      value={fontSize}
+                      onChange={(e) => handleFontSizeChange(e.target.value)}
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'}`}
+                    >
+                      {fontSizeOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">边框颜色</label>
-                  <input
-                    type="color"
-                    value={borderColor}
-                    onChange={(e) => setBorderColor(e.target.value)}
-                    className="w-full h-10 rounded cursor-pointer"
-                  />
+                {/* 外框配置 */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">外框设置</h3>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">圆角大小</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={borderRadius}
+                      onChange={(e) => setBorderRadius(e.target.value)}
+                      className="w-full"
+                    />
+                    <div className="text-sm text-center text-gray-500 dark:text-gray-400 mt-1">
+                      {borderRadius}px
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">边框颜色</label>
+                    <input
+                      type="color"
+                      value={borderColor}
+                      onChange={(e) => setBorderColor(e.target.value)}
+                      className="w-full h-10 rounded cursor-pointer"
+                    />
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">阴影颜色</label>
+                    <input
+                      type="color"
+                      value={shadowColor}
+                      onChange={(e) => setShadowColor(e.target.value)}
+                      className="w-full h-10 rounded cursor-pointer"
+                    />
+                  </div>
                 </div>
                 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">阴影颜色</label>
-                  <input
-                    type="color"
-                    value={shadowColor}
-                    onChange={(e) => setShadowColor(e.target.value)}
-                    className="w-full h-10 rounded cursor-pointer"
-                  />
-                </div>
-              </div>
-              
-              {/* 一言配置 */}
-              <div className="md:col-span-2">
-                <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">一言设置</h3>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">类别</label>
-                  <select
-                    value={selectedType}
-                    onChange={(e) => setSelectedType(e.target.value)}
-                    className={`w-full p-2 border rounded ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'}`}
+                {/* 一言配置 */}
+                <div className="md:col-span-2">
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">一言设置</h3>
+                  
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">类别</label>
+                    <select
+                      value={selectedType}
+                      onChange={(e) => setSelectedType(e.target.value)}
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'}`}
+                    >
+                      {hitokotoTypes.map(type => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <button
+                    onClick={fetchHitokoto}
+                    className="px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
                   >
-                    {hitokotoTypes.map(type => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
+                    刷新一言
+                  </button>
                 </div>
-                
-                <button
-                  onClick={fetchHitokoto}
-                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
-                >
-                  刷新一言
-                </button>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
       
       {/* 项目信息 */}
